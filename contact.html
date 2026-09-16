@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="#050505" name="theme-color"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Contact — Assassin's Creed Saga</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;family=Geist:wght@600&amp;family=Hanken+Grotesk:wght@400&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-lg text-body-lg">
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-black/40 border-b border-white/5 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-5">
+<a href="/" class="flex items-center gap-4 font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary uppercase tracking-[0.2em]">
+<img src="/assets/logos/ac-insignia.svg" alt="" class="ac-logo h-8 w-auto" width="32" height="32"/>
+<span class="hidden sm:inline">ASSASSIN'S CREED</span>
+</a>
+<a href="/" class="text-on-surface-variant hover:text-secondary transition-colors font-label-sm text-label-sm uppercase tracking-widest flex items-center gap-2 cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to Saga
+</a>
+</header>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-2xl mx-auto relative z-10">
+<span class="ac-chapter mb-6">Establish Contact</span>
+<h1 class="font-headline-xl text-[26px] sm:text-[34px] md:text-headline-xl text-primary uppercase tracking-widest mb-4 text-shadow-cinematic">Contact the Brotherhood</h1>
+<p class="text-on-surface-variant leading-relaxed mb-12">Have a question, suggestion, or wish to join the order? Send a message through the Animus below. We respond to all transmissions within 48 hours.</p>
+
+<form id="contact-form" class="space-y-6" novalidate>
+<div>
+<label for="cf-name" class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Name</label>
+<input id="cf-name" name="name" type="text" required class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-secondary transition-colors placeholder:text-on-surface-variant/30" placeholder="Your name"/>
+<p class="cf-error text-error text-xs mt-2 hidden" data-for="cf-name">Please enter your name.</p>
+</div>
+<div>
+<label for="cf-email" class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Email</label>
+<input id="cf-email" name="email" type="email" required class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-secondary transition-colors placeholder:text-on-surface-variant/30" placeholder="you@example.com"/>
+<p class="cf-error text-error text-xs mt-2 hidden" data-for="cf-email">Please enter a valid email address.</p>
+</div>
+<div>
+<label for="cf-subject" class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Subject</label>
+<select id="cf-subject" name="subject" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-secondary transition-colors cursor-pointer">
+<option>General Inquiry</option>
+<option>Bug Report</option>
+<option>Feature Suggestion</option>
+<option>Partnership</option>
+<option>Other</option>
+</select>
+</div>
+<div>
+<label for="cf-message" class="block font-label-sm text-label-sm uppercase tracking-widest text-secondary mb-2">Message</label>
+<textarea id="cf-message" name="message" rows="6" required class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-primary focus:outline-none focus:border-secondary transition-colors placeholder:text-on-surface-variant/30 resize-none" placeholder="Your message..."></textarea>
+<p class="cf-error text-error text-xs mt-2 hidden" data-for="cf-message">Please enter a message (at least 10 characters).</p>
+</div>
+<button type="submit" class="inline-flex items-center gap-3 px-8 py-4 bg-surface-container-lowest border border-secondary/80 text-secondary font-label-sm text-label-sm uppercase tracking-[0.2em] rounded glow-gold cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">send</span> Transmit Message
+</button>
+</form>
+
+<div id="contact-success" class="hidden mt-8 p-6 rounded-lg bg-surface-container-low border border-secondary/40 text-center">
+<span class="material-symbols-outlined text-secondary text-[40px] mb-3 block">mark_email_read</span>
+<h2 class="font-headline-md text-primary text-xl mb-2">Message Transmitted</h2>
+<p class="text-on-surface-variant text-sm">Your message has been sent through the Animus. We will respond within 48 hours.</p>
+<button onclick="document.getElementById('contact-form').reset(); document.getElementById('contact-success').classList.add('hidden'); document.getElementById('contact-form').classList.remove('hidden');" class="mt-4 text-secondary font-label-sm text-label-sm uppercase tracking-widest hover:underline cursor-pointer">Send another</button>
+</div>
+</main>
+<footer class="bg-surface-container-lowest/90 border-t border-outline-variant/20 w-full py-8 px-margin-mobile md:px-margin-desktop flex justify-between items-center gap-gutter relative z-10">
+<div class="flex items-center gap-4">
+<img src="/assets/logos/abstergo.svg" alt="" class="h-8 w-auto opacity-70" width="32" height="28"/>
+<img src="/assets/logos/ubisoft-white.svg" alt="" class="h-6 w-auto opacity-70" width="24" height="22"/>
+</div>
+<p class="text-on-surface text-xs opacity-50">© 2026 — Fan Tribute. Not affiliated with Ubisoft.</p>
+</footer>
+<script type="module" src="/src/legal.js"></script>
+<script>
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+  const showErr = (id, show) => {
+    const el = document.querySelector('.cf-error[data-for="' + id + '"]');
+    if (el) el.classList.toggle('hidden', !show);
+  };
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let ok = true;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const msg = form.message.value.trim();
+    if (!name) { showErr('cf-name', true); ok = false; } else showErr('cf-name', false);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('cf-email', true); ok = false; } else showErr('cf-email', false);
+    if (msg.length < 10) { showErr('cf-message', true); ok = false; } else showErr('cf-message', false);
+    if (!ok) return;
+    // Simulate successful submission (no backend on this static site)
+    form.classList.add('hidden');
+    document.getElementById('contact-success').classList.remove('hidden');
+  });
+})();
+</script>
+</body>
+</html>

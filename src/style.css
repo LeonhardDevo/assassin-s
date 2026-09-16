@@ -1,0 +1,461 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ASSASSIN'S CREED SAGA — Design System (Tailwind v4 @theme)
+   ============================================================ */
+@theme {
+  /* Colors — Material-style cinematic dark palette */
+  --color-error: #ffb4ab;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface: #131313;
+  --color-tertiary-fixed: #ffdad4;
+  --color-on-primary: #313030;
+  --color-primary-container: #121212;
+  --color-background: #131313;
+  --color-outline-variant: #444748;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-bright: #393939;
+  --color-on-error: #690005;
+  --color-secondary-fixed-dim: #e9c349;
+  --color-on-surface: #e5e2e1;
+  --color-inverse-surface: #e5e2e1;
+  --color-secondary-fixed: #ffe088;
+  --color-surface-container-highest: #353535;
+  --color-on-surface-variant: #c4c7c7;
+  --color-on-secondary: #3c2f00;
+  --color-secondary-container: #af8d11;
+  --color-surface-container: #20201f;
+  --color-on-primary-fixed-variant: #474646;
+  --color-primary-fixed: #e5e2e1;
+  --color-on-secondary-fixed: #241a00;
+  --color-primary: #c8c6c5;
+  --color-on-primary-fixed: #1c1b1b;
+  --color-surface-tint: #c8c6c5;
+  --color-secondary: #e9c349;
+  --color-on-tertiary: #690000;
+  --color-surface-dim: #131313;
+  --color-on-background: #e5e2e1;
+  --color-on-error-container: #ffdad6;
+  --color-on-secondary-fixed-variant: #574500;
+  --color-surface-variant: #353535;
+  --color-inverse-primary: #5f5e5e;
+  --color-tertiary-container: #2f0000;
+  --color-outline: #8e9192;
+  --color-surface-container-low: #1c1b1b;
+  --color-tertiary: #ffb4a8;
+  --color-inverse-on-surface: #313030;
+  --color-on-tertiary-fixed-variant: #930000;
+  --color-on-primary-container: #7e7d7d;
+  --color-on-secondary-container: #342800;
+  --color-tertiary-fixed-dim: #ffb4a8;
+  --color-on-tertiary-fixed: #410000;
+  --color-error-container: #93000a;
+  --color-on-tertiary-container: #e5412f;
+  --color-primary-fixed-dim: #c8c6c5;
+
+  /* AC signature accents */
+  --color-ac-gold: #e9c349;
+  --color-ac-gold-bright: #ffe088;
+  --color-ac-blood: #93000a;
+  --color-animus-blue: #4fc3f7;
+  --color-animus-cyan: #80e2ff;
+
+  /* Spacing */
+  --spacing-gutter: 24px;
+  --spacing-unit: 8px;
+  --spacing-margin-desktop: 64px;
+  --spacing-margin-mobile: 20px;
+
+  /* Container max-width */
+  --container-container-max: 1440px;
+
+  /* Border radius */
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-body-lg: "Hanken Grotesk", sans-serif;
+  --font-body-md: "Hanken Grotesk", sans-serif;
+  --font-headline-xl: "Playfair Display", serif;
+  --font-headline-lg: "Playfair Display", serif;
+  --font-headline-lg-mobile: "Playfair Display", serif;
+  --font-headline-md: "Playfair Display", serif;
+  --font-label-sm: "Geist", sans-serif;
+  --font-cinzel: "Cinzel", serif;
+  --font-inter: "Inter", sans-serif;
+
+  /* Font sizes */
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.6;
+  --text-body-md--font-weight: 400;
+
+  --text-headline-xl: 60px;
+  --text-headline-xl--line-height: 1.1;
+  --text-headline-xl--letter-spacing: -0.02em;
+  --text-headline-xl--font-weight: 700;
+
+  --text-headline-lg: 40px;
+  --text-headline-lg--line-height: 1.2;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-lg-mobile: 32px;
+  --text-headline-lg-mobile--line-height: 1.2;
+  --text-headline-lg-mobile--font-weight: 600;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 1.3;
+  --text-headline-md--font-weight: 500;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 1.2;
+  --text-label-sm--letter-spacing: 0.1em;
+  --text-label-sm--font-weight: 600;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+  }
+  html { scroll-behavior: smooth; }
+  ::selection { background: var(--color-ac-gold); color: #0e0e0e; }
+}
+
+/* ============================================================
+   EXISTING CINEMATIC UTILITIES
+   ============================================================ */
+@layer utilities {
+  .glow-gold {
+    box-shadow: 0 0 15px 0 rgba(233, 195, 73, 0.2);
+    transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  }
+  .glow-gold:hover {
+    box-shadow: 0 0 25px 0 rgba(233, 195, 73, 0.4);
+    background-color: var(--color-secondary);
+    color: var(--color-surface-container-lowest) !important;
+  }
+
+  .text-shadow-cinematic { text-shadow: 0 4px 24px rgba(0,0,0,0.8); }
+  .text-shadow-gold { text-shadow: 0 0 18px rgba(233,195,73,0.45), 0 2px 8px rgba(0,0,0,0.7); }
+
+  .parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  .anim-reveal { opacity: 0; }
+}
+
+/* ============================================================
+   ASSASSIN'S CREED — ANIMATION SYSTEM
+   ============================================================ */
+
+/* ---- Animus Intro / Loading Overlay ---- */
+@layer utilities {
+  .ac-intro {
+    position: fixed; inset: 0; z-index: 200;
+    background: #050505;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 28px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .ac-intro.ac-intro--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .ac-intro__crest {
+    width: 120px; height: 120px;
+    filter: drop-shadow(0 0 14px rgba(233,195,73,0.55));
+  }
+  .ac-intro__crest path {
+    stroke: var(--color-ac-gold);
+    stroke-width: 1.5;
+    stroke-dasharray: 1600;
+    stroke-dashoffset: 1600;
+    fill: transparent;
+    animation: ac-draw 2.4s ease forwards, ac-fill 0.8s ease 2.2s forwards;
+  }
+  .ac-intro__title {
+    font-family: var(--font-headline-xl);
+    letter-spacing: 0.4em;
+    font-size: 14px;
+    color: var(--color-ac-gold);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: ac-fade-up 0.8s ease 0.6s forwards;
+  }
+  .ac-intro__bar {
+    width: 220px; height: 2px;
+    background: rgba(233,195,73,0.15);
+    overflow: hidden; position: relative;
+    opacity: 0; animation: ac-fade-up 0.8s ease 0.9s forwards;
+  }
+  .ac-intro__bar::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, var(--color-ac-gold), transparent);
+    transform: translateX(-100%);
+    animation: ac-sync 2.2s ease-in-out 1.1s forwards;
+  }
+  .ac-intro__status {
+    font-family: var(--font-label-sm);
+    font-size: 10px; letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    opacity: 0; animation: ac-fade-up 0.8s ease 1.2s forwards;
+  }
+
+  @keyframes ac-draw { to { stroke-dashoffset: 0; } }
+  @keyframes ac-fill { from { fill: transparent; } to { fill: rgba(233,195,73,0.9); } }
+  @keyframes ac-sync { to { transform: translateX(100%); } }
+  @keyframes ac-fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+/* ---- Animus HUD: corner brackets + scanlines + vignette ---- */
+@layer utilities {
+  .ac-hud { position: fixed; inset: 0; pointer-events: none; z-index: 40; }
+  .ac-hud__bracket {
+    position: absolute; width: 26px; height: 26px;
+    border: 1px solid rgba(233,195,73,0.35);
+    opacity: 0.6;
+  }
+  .ac-hud__bracket--tl { top: 18px; left: 18px; border-right: 0; border-bottom: 0; }
+  .ac-hud__bracket--tr { top: 18px; right: 18px; border-left: 0; border-bottom: 0; }
+  .ac-hud__bracket--bl { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
+  .ac-hud__bracket--br { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
+
+  .ac-scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 41;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.018) 0px,
+      rgba(255,255,255,0.018) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+  }
+  .ac-scanlines::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 140px;
+    background: linear-gradient(to bottom, transparent, rgba(233,195,73,0.05), transparent);
+    animation: ac-scan 7s linear infinite;
+  }
+  @keyframes ac-scan { 0% { top: -140px; } 100% { top: 100%; } }
+
+  .ac-vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 39;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+  }
+
+  .ac-desync {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: var(--font-label-sm); font-size: 10px; letter-spacing: 0.4em;
+    color: rgba(233,195,73,0.7); text-transform: uppercase;
+    pointer-events: none; z-index: 42; opacity: 0;
+  }
+  .ac-desync.ac-desync--on { animation: ac-flicker 1.6s steps(2) infinite; }
+  @keyframes ac-flicker {
+    0%, 100% { opacity: 0; }
+    48%, 52% { opacity: 0.85; }
+    50% { opacity: 0.2; }
+  }
+}
+
+/* ---- Glitch / Decode text effect ---- */
+@layer utilities {
+  .ac-glitch { position: relative; display: inline-block; }
+  .ac-glitch::before,
+  .ac-glitch::after {
+    content: attr(data-text);
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+  .ac-glitch::before {
+    color: var(--color-animus-cyan);
+    transform: translate(0); mix-blend-mode: screen;
+    clip-path: inset(0 0 0 0);
+    animation: ac-glitch-a 3.2s infinite steps(2);
+  }
+  .ac-glitch::after {
+    color: #ff4d5e;
+    transform: translate(0); mix-blend-mode: screen;
+    clip-path: inset(0 0 0 0);
+    animation: ac-glitch-b 2.7s infinite steps(2);
+  }
+  @keyframes ac-glitch-a {
+    0%, 92%, 100% { transform: translate(0); clip-path: inset(0 0 0 0); }
+    93% { transform: translate(-2px, 1px); clip-path: inset(20% 0 60% 0); }
+    96% { transform: translate(2px, -1px); clip-path: inset(60% 0 10% 0); }
+  }
+  @keyframes ac-glitch-b {
+    0%, 90%, 100% { transform: translate(0); clip-path: inset(0 0 0 0); }
+    91% { transform: translate(2px, -1px); clip-path: inset(10% 0 70% 0); }
+    94% { transform: translate(-2px, 1px); clip-path: inset(50% 0 30% 0); }
+  }
+
+  .ac-decode { font-family: var(--font-label-sm); }
+}
+
+/* ---- Hidden Blade reveal (diagonal slash clip) ---- */
+@layer utilities {
+  .ac-blade-reveal {
+    opacity: 0;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, clip-path 0.9s cubic-bezier(.6,.05,.25,1);
+  }
+  .ac-blade-reveal.active {
+    opacity: 1; transform: translateY(0);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* ---- Eagle Vision overlay ---- */
+@layer utilities {
+  .ac-eagle {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    background:
+      radial-gradient(ellipse at center, rgba(79,195,247,0.12) 0%, rgba(79,195,247,0.04) 40%, transparent 70%),
+      linear-gradient(rgba(79,195,247,0.05), rgba(0,20,40,0.18));
+    mix-blend-mode: screen;
+  }
+  .ac-eagle.ac-eagle--on { opacity: 1; visibility: visible; }
+  .ac-eagle::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(128,226,255,0.06), transparent 40%),
+      repeating-linear-gradient(to bottom, rgba(128,226,255,0.04) 0 1px, transparent 1px 4px);
+  }
+  .ac-eagle__cross {
+    position: absolute; top: 50%; left: 50%;
+    width: 80px; height: 80px;
+    transform: translate(-50%,-50%);
+    border: 1px solid rgba(128,226,255,0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 24px rgba(128,226,255,0.5), inset 0 0 24px rgba(128,226,255,0.25);
+  }
+  .ac-eagle__cross::before,
+  .ac-eagle__cross::after {
+    content: ""; position: absolute; background: rgba(128,226,255,0.7);
+  }
+  .ac-eagle__cross::before { top: 50%; left: -12px; right: -12px; height: 1px; }
+  .ac-eagle__cross::after { left: 50%; top: -12px; bottom: -12px; width: 1px; }
+}
+
+/* ---- Custom AC cursor (desktop only) ---- */
+@layer utilities {
+  @media (hover: hover) and (pointer: fine) {
+    html.ac-cursor-on, html.ac-cursor-on * { cursor: none !important; }
+  }
+  .ac-cursor, .ac-cursor__dot {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    mix-blend-mode: difference;
+  }
+  .ac-cursor {
+    width: 28px; height: 28px;
+    border: 1px solid rgba(233,195,73,0.8);
+    border-radius: 50%;
+    transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  }
+  .ac-cursor.ac-cursor--hover { width: 44px; height: 44px; border-color: var(--color-ac-gold-bright); }
+  .ac-cursor__dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--color-ac-gold);
+  }
+}
+
+/* ---- Memory Sequence chapter label ---- */
+@layer utilities {
+  .ac-chapter {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-label-sm);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-ac-gold);
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ac-chapter::before {
+    content: ""; width: 24px; height: 1px; flex-shrink: 0;
+    background: linear-gradient(to right, transparent, var(--color-ac-gold));
+  }
+  @media (min-width: 640px) {
+    .ac-chapter { font-size: 11px; gap: 14px; }
+    .ac-chapter::before { width: 36px; }
+  }
+  /* Centered variant (in section headers) */
+  .ac-chapter.justify-center { justify-content: center; }
+}
+
+/* ---- Gold underline link ---- */
+@layer utilities {
+  .ac-link {
+    position: relative;
+    transition: color 0.25s ease;
+  }
+  .ac-link::after {
+    content: ""; position: absolute; left: 0; bottom: -4px; height: 1px; width: 100%;
+    background: var(--color-ac-gold);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 0.35s cubic-bezier(.6,.05,.25,1);
+  }
+  .ac-link:hover { color: var(--color-ac-gold); }
+  .ac-link:hover::after { transform: scaleX(1); transform-origin: left; }
+}
+
+/* ---- Ken Burns slow zoom for hero ---- */
+@layer utilities {
+  .ac-kenburns { animation: ac-kenburns 18s ease-in-out infinite alternate; }
+  @keyframes ac-kenburns {
+    from { transform: scale(1.05) translate(0,0); }
+    to   { transform: scale(1.12) translate(-1.5%, -1%); }
+  }
+}
+
+/* ---- Logo hover (footer/header) ---- */
+@layer utilities {
+  .ac-logo {
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.4s ease;
+    filter: brightness(0.85);
+  }
+  .ac-logo:hover { opacity: 1 !important; filter: brightness(1.1) drop-shadow(0 0 10px rgba(233,195,73,0.4)); transform: translateY(-2px); }
+}
+
+/* ---- Reduced motion: disable non-essential animation ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ac-kenburns, .ac-scanlines::after, .ac-glitch::before, .ac-glitch::after { animation: none !important; }
+  .ac-glitch::before, .ac-glitch::after { display: none !important; }
+  .ac-blade-reveal { opacity: 1 !important; clip-path: none !important; transform: none !important; }
+}
