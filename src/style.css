@@ -6,42 +6,42 @@
 @theme {
   /* Colors — Material-style cinematic dark palette */
   --color-error: #ffb4ab;
-  --color-surface-container-lowest: #0e0e0e;
-  --color-surface: #131313;
+  --color-surface-container-lowest: #050608;
+  --color-surface: #0a0c10;
   --color-tertiary-fixed: #ffdad4;
   --color-on-primary: #313030;
-  --color-primary-container: #121212;
-  --color-background: #131313;
-  --color-outline-variant: #444748;
-  --color-surface-container-high: #2a2a2a;
-  --color-surface-bright: #393939;
+  --color-primary-container: #101318;
+  --color-background: #07080b;
+  --color-outline-variant: #3a3e46;
+  --color-surface-container-high: #1c202a;
+  --color-surface-bright: #303644;
   --color-on-error: #690005;
   --color-secondary-fixed-dim: #e9c349;
-  --color-on-surface: #e5e2e1;
-  --color-inverse-surface: #e5e2e1;
+  --color-on-surface: #edeae8;
+  --color-inverse-surface: #edeae8;
   --color-secondary-fixed: #ffe088;
-  --color-surface-container-highest: #353535;
-  --color-on-surface-variant: #c4c7c7;
+  --color-surface-container-highest: #262c3a;
+  --color-on-surface-variant: #b8bdc4;
   --color-on-secondary: #3c2f00;
   --color-secondary-container: #af8d11;
-  --color-surface-container: #20201f;
+  --color-surface-container: #141720;
   --color-on-primary-fixed-variant: #474646;
-  --color-primary-fixed: #e5e2e1;
+  --color-primary-fixed: #edeae8;
   --color-on-secondary-fixed: #241a00;
-  --color-primary: #c8c6c5;
+  --color-primary: #d4d1cf;
   --color-on-primary-fixed: #1c1b1b;
-  --color-surface-tint: #c8c6c5;
+  --color-surface-tint: #d4d1cf;
   --color-secondary: #e9c349;
   --color-on-tertiary: #690000;
-  --color-surface-dim: #131313;
-  --color-on-background: #e5e2e1;
+  --color-surface-dim: #0a0c10;
+  --color-on-background: #edeae8;
   --color-on-error-container: #ffdad6;
   --color-on-secondary-fixed-variant: #574500;
-  --color-surface-variant: #353535;
+  --color-surface-variant: #2d3340;
   --color-inverse-primary: #5f5e5e;
   --color-tertiary-container: #2f0000;
-  --color-outline: #8e9192;
-  --color-surface-container-low: #1c1b1b;
+  --color-outline: #7d838e;
+  --color-surface-container-low: #0e1016;
   --color-tertiary: #ffb4a8;
   --color-inverse-on-surface: #313030;
   --color-on-tertiary-fixed-variant: #930000;
@@ -123,11 +123,14 @@
    BASE
    ============================================================ */
 @layer base {
+  html {
+    overflow-x: hidden;
+    scroll-behavior: auto;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-on-surface);
   }
-  html { scroll-behavior: smooth; }
   ::selection { background: var(--color-ac-gold); color: #0e0e0e; }
 }
 
@@ -247,23 +250,50 @@
     position: fixed; inset: 0; pointer-events: none; z-index: 41;
     background: repeating-linear-gradient(
       to bottom,
-      rgba(255,255,255,0.018) 0px,
-      rgba(255,255,255,0.018) 1px,
+      rgba(255,255,255,0.015) 0px,
+      rgba(255,255,255,0.015) 1px,
       transparent 1px,
-      transparent 3px
+      transparent 4px
     );
-    mix-blend-mode: overlay;
+    opacity: 0.35;
   }
   .ac-scanlines::after {
-    content: ""; position: absolute; left: 0; right: 0; height: 140px;
-    background: linear-gradient(to bottom, transparent, rgba(233,195,73,0.05), transparent);
-    animation: ac-scan 7s linear infinite;
+    content: ""; position: absolute; left: 0; right: 0; height: 160px;
+    background: linear-gradient(to bottom, transparent, rgba(233,195,73,0.02), transparent);
+    animation: ac-scan 9s linear infinite;
   }
-  @keyframes ac-scan { 0% { top: -140px; } 100% { top: 100%; } }
+  @keyframes ac-scan { 0% { top: -160px; } 100% { top: 100%; } }
 
   .ac-vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 39;
-    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(5,6,8,0.75) 100%);
+  }
+
+  /* Cinematic Card Overlay & Lighting */
+  .ac-card-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 8, 11, 0.12) 0%,
+      rgba(7, 8, 11, 0.04) 28%,
+      rgba(7, 8, 11, 0.45) 58%,
+      rgba(7, 8, 11, 0.88) 82%,
+      #07080b 100%
+    );
+  }
+
+  .ac-card-glow {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.7);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease, border-color 0.45s ease;
+  }
+  .ac-card-glow:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.9), 0 0 25px -4px rgba(233, 195, 73, 0.25);
+  }
+
+  .ac-glass {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(14, 16, 22, 0.72);
   }
 
   .ac-desync {
@@ -315,52 +345,75 @@
   .ac-decode { font-family: var(--font-label-sm); }
 }
 
-/* ---- Hidden Blade reveal (diagonal slash clip) ---- */
+/* ---- Hidden Blade reveal (smooth cinematic rise) ---- */
 @layer utilities {
   .ac-blade-reveal {
     opacity: 0;
-    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease, clip-path 0.9s cubic-bezier(.6,.05,.25,1);
+    transform: translateY(28px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
   .ac-blade-reveal.active {
-    opacity: 1; transform: translateY(0);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* ---- Eagle Vision overlay ---- */
+/* ---- Eagle Vision overlay & Holographic Shift ---- */
 @layer utilities {
   .ac-eagle {
     position: fixed; inset: 0; pointer-events: none; z-index: 60;
     opacity: 0; visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
     background:
-      radial-gradient(ellipse at center, rgba(79,195,247,0.12) 0%, rgba(79,195,247,0.04) 40%, transparent 70%),
-      linear-gradient(rgba(79,195,247,0.05), rgba(0,20,40,0.18));
+      radial-gradient(ellipse at center, rgba(128,226,255,0.18) 0%, rgba(79,195,247,0.08) 50%, rgba(0,15,35,0.6) 100%),
+      linear-gradient(rgba(128,226,255,0.06), rgba(0,20,40,0.3));
     mix-blend-mode: screen;
   }
   .ac-eagle.ac-eagle--on { opacity: 1; visibility: visible; }
   .ac-eagle::before {
     content: ""; position: absolute; inset: 0;
     background:
-      linear-gradient(rgba(128,226,255,0.06), transparent 40%),
+      linear-gradient(rgba(128,226,255,0.08), transparent 40%),
       repeating-linear-gradient(to bottom, rgba(128,226,255,0.04) 0 1px, transparent 1px 4px);
+  }
+  .ac-eagle__sonar {
+    position: absolute; top: 50%; left: 50%;
+    width: 220px; height: 220px;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid rgba(128, 226, 255, 0.7);
+    border-radius: 50%;
+    animation: ac-sonar-wave 2.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    pointer-events: none;
+  }
+  @keyframes ac-sonar-wave {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(5.0); opacity: 0; }
   }
   .ac-eagle__cross {
     position: absolute; top: 50%; left: 50%;
-    width: 80px; height: 80px;
+    width: 90px; height: 90px;
     transform: translate(-50%,-50%);
-    border: 1px solid rgba(128,226,255,0.6);
+    border: 1.5px solid rgba(128,226,255,0.7);
     border-radius: 50%;
-    box-shadow: 0 0 24px rgba(128,226,255,0.5), inset 0 0 24px rgba(128,226,255,0.25);
+    box-shadow: 0 0 30px rgba(128,226,255,0.6), inset 0 0 25px rgba(128,226,255,0.3);
   }
   .ac-eagle__cross::before,
   .ac-eagle__cross::after {
-    content: ""; position: absolute; background: rgba(128,226,255,0.7);
+    content: ""; position: absolute; background: rgba(128,226,255,0.8);
   }
-  .ac-eagle__cross::before { top: 50%; left: -12px; right: -12px; height: 1px; }
-  .ac-eagle__cross::after { left: 50%; top: -12px; bottom: -12px; width: 1px; }
+  .ac-eagle__cross::before { top: 50%; left: -16px; right: -16px; height: 1.5px; }
+  .ac-eagle__cross::after { left: 50%; top: -16px; bottom: -16px; width: 1.5px; }
+
+  /* Eagle Vision active world & card styling */
+  html.ac-eagle-active #hero-char-img {
+    filter: drop-shadow(0 0 35px rgba(233, 195, 73, 0.95)) drop-shadow(0 0 70px rgba(128, 226, 255, 0.6)) brightness(1.25) contrast(1.15) !important;
+  }
+  html.ac-eagle-active #hero-card-eagle-glow {
+    opacity: 1 !important;
+  }
+  html.ac-eagle-active .ac-card-glow {
+    box-shadow: 0 0 35px rgba(128, 226, 255, 0.4) !important;
+  }
 }
 
 /* ---- Custom AC cursor (desktop only) ---- */
@@ -458,4 +511,45 @@
   .ac-kenburns, .ac-scanlines::after, .ac-glitch::before, .ac-glitch::after { animation: none !important; }
   .ac-glitch::before, .ac-glitch::after { display: none !important; }
   .ac-blade-reveal { opacity: 1 !important; clip-path: none !important; transform: none !important; }
+}
+
+/* ============================================================
+   3D HERO POP-OUT CARD & ANIMUS CYBER-FRAME
+   ============================================================ */
+.ac-popout-img {
+  will-change: transform;
+  filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 15px rgba(233, 195, 73, 0.15));
+}
+
+.ac-laser-line {
+  background: linear-gradient(90deg, transparent, var(--color-ac-gold), transparent);
+  animation: ac-laser-sweep 3s ease-in-out infinite;
+}
+
+@keyframes ac-laser-sweep {
+  0% { transform: translateX(-100%); }
+  50%, 100% { transform: translateX(100%); }
+}
+
+/* Slash blade strike animation */
+@keyframes ac-blade-slash {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) rotate(-15deg);
+    filter: drop-shadow(0 0 0px #fff);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.05) rotate(-15deg);
+    filter: drop-shadow(0 0 18px #ffe088) drop-shadow(0 0 35px #e9c349);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15) rotate(-15deg);
+    filter: drop-shadow(0 0 2px transparent);
+  }
+}
+
+.ac-slash-active {
+  animation: ac-blade-slash 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }

@@ -5,9 +5,21 @@ export function initUIControls(gamesData, renderGamesCallback) {
     // ===== Modal =====
     window.openModal = function(game) {
         if (!modal) return;
-        document.getElementById('modal-title').textContent = game.fullName || game.title;
-        document.getElementById('modal-about').textContent = game.about || game.desc || '';
-        document.getElementById('modal-year').textContent = game.year + (game.location ? ` • ${game.location}` : '');
+        const titleEl = document.getElementById('modal-title');
+        const aboutEl = document.getElementById('modal-about');
+        const yearEl = document.getElementById('modal-year');
+        const posterEl = document.getElementById('modal-poster');
+        const backdropEl = document.getElementById('modal-backdrop');
+        const protagEl = document.getElementById('modal-protagonist');
+        const periodEl = document.getElementById('modal-period');
+
+        if (titleEl) titleEl.textContent = game.fullName || game.title;
+        if (aboutEl) aboutEl.textContent = game.about || game.desc || '';
+        if (yearEl) yearEl.textContent = `${game.year}${game.location ? ' • ' + game.location : ''}`;
+        if (posterEl) posterEl.src = game.image;
+        if (backdropEl) backdropEl.src = game.wallpaper || game.image;
+        if (protagEl) protagEl.textContent = game.protagonist || 'Assassin Order';
+        if (periodEl) periodEl.textContent = game.historicalPeriod || '';
 
         if (game.minSpecs) {
             document.getElementById('min-cpu').textContent = game.minSpecs.cpu;
@@ -68,7 +80,6 @@ export function initUIControls(gamesData, renderGamesCallback) {
         void searchOverlay.offsetWidth;
         searchOverlay.classList.remove('opacity-0');
         setTimeout(() => searchInput?.focus(), 50);
-        // Show all games initially
         renderSearchResults(gamesData, '');
     }
 
@@ -94,7 +105,8 @@ export function initUIControls(gamesData, renderGamesCallback) {
                 const l = (g.location || '').toLowerCase();
                 const y = (g.year || '').toLowerCase();
                 const a = (g.about || g.desc || '').toLowerCase();
-                return t.includes(lower) || f.includes(lower) || l.includes(lower) || y.includes(lower) || a.includes(lower);
+                const p = (g.protagonist || '').toLowerCase();
+                return t.includes(lower) || f.includes(lower) || l.includes(lower) || y.includes(lower) || a.includes(lower) || p.includes(lower);
             })
             : games;
 
@@ -113,15 +125,16 @@ export function initUIControls(gamesData, renderGamesCallback) {
         filtered.forEach((g, i) => {
             const card = document.createElement('button');
             card.type = 'button';
-            card.className = 'search-result-card flex items-center gap-4 p-4 rounded-lg bg-surface-container-low/60 border border-outline-variant/20 hover:border-secondary/50 hover:bg-surface-container/60 transition-all text-left cursor-pointer';
+            card.className = 'search-result-card flex items-center gap-4 p-3.5 rounded-xl bg-surface-container-low/70 border border-white/10 hover:border-secondary/60 hover:bg-surface-container transition-all text-left cursor-pointer ac-card-glow';
             card.dataset.index = i;
             card.innerHTML = `
-                <img src="${g.image}" alt="" class="w-16 h-16 object-cover rounded flex-shrink-0" loading="lazy"/>
+                <img src="${g.image}" alt="" class="w-14 h-18 aspect-[3/4] object-cover object-top rounded-lg shadow-md border border-white/10 flex-shrink-0" loading="lazy"/>
                 <div class="flex-1 min-w-0">
-                    <p class="font-headline-md text-primary text-base truncate">${g.title}</p>
-                    <p class="text-on-surface-variant text-xs truncate">${g.year}${g.location ? ' • ' + g.location : ''}</p>
+                    <p class="font-headline-md text-primary text-base font-bold truncate">${g.title}</p>
+                    <p class="text-secondary text-xs truncate font-medium">${g.year}${g.location ? ' • ' + g.location : ''}</p>
+                    <p class="text-on-surface-variant/70 text-[11px] truncate mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-secondary">person</span>${g.protagonist || ''}</p>
                 </div>
-                <span class="material-symbols-outlined text-secondary/40 text-[20px] flex-shrink-0">arrow_forward</span>
+                <span class="material-symbols-outlined text-secondary/50 text-[20px] flex-shrink-0">arrow_forward</span>
             `;
             card.addEventListener('click', () => {
                 closeSearch();
@@ -140,7 +153,7 @@ export function initUIControls(gamesData, renderGamesCallback) {
         if (!cards) return;
         cards.forEach((c, i) => {
             c.classList.toggle('border-secondary', i === searchState.selected);
-            c.classList.toggle('bg-surface-container/60', i === searchState.selected);
+            c.classList.toggle('bg-surface-container', i === searchState.selected);
         });
         if (searchState.selected >= 0 && cards[searchState.selected]) {
             cards[searchState.selected].scrollIntoView({ block: 'nearest', behavior: 'smooth' });

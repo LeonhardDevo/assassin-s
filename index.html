@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="en"><head>
+<html class="dark overflow-x-hidden" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <meta content="#050505" name="theme-color"/>
@@ -68,9 +68,7 @@
         }
     </style>
 </head>
-<body class="bg-background text-on-surface antialiased flex flex-col font-body-lg text-body-lg overflow-x-hidden">
-<!-- Particle Container -->
-<div class="fixed inset-0 pointer-events-none z-50 overflow-hidden" id="particles-container"></div>
+<body class="bg-background text-on-surface antialiased flex flex-col font-body-lg text-body-lg">
 <!-- TopAppBar — desktop: inline nav · mobile: hamburger -->
 <header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-black/10 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-5 transition-all duration-300" id="main-header">
 <!-- Left: logo (desktop) / hamburger (mobile) -->
@@ -101,41 +99,238 @@
 </div>
 </header>
 <!-- Hero Section -->
-<section class="relative z-10 w-full min-h-screen flex items-center justify-center overflow-hidden" id="top">
-<!-- Background Image with Gradient Overlay -->
-<div class="absolute inset-0 z-0">
-<img alt="" class="w-full h-full object-cover object-center ac-kenburns" src="/assets/hero.png" fetchpriority="high"/>
-<!-- Atmospheric Gradients -->
-<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-black/60 z-10"></div>
-<div class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50 z-10"></div>
-<div class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-error-container/10 blur-[100px] rounded-full z-10 mix-blend-overlay"></div>
-</div>
-<!-- Centered Content -->
-<div class="relative z-20 flex flex-col items-center justify-center px-margin-mobile md:px-margin-desktop text-center w-full max-w-4xl mx-auto mt-16 reveal active">
-<span class="ac-chapter mb-6">Memory Sequence 01 — The Collection</span>
-<h1 class="ac-glitch font-headline-xl text-[34px] xs:text-[40px] sm:text-[52px] md:text-headline-xl text-primary uppercase mb-6 text-shadow-cinematic tracking-widest leading-tight" data-text="ASSASSIN'S CREED">
-                ASSASSIN'S CREED
-            </h1>
-<p class="font-headline-md text-headline-md text-on-surface-variant w-full max-w-xl mx-auto mb-10 sm:mb-12 text-shadow-cinematic font-light">
-                Experience the complete saga.
-            </p>
-<a class="group relative inline-flex items-center justify-center px-7 py-4 sm:px-10 sm:py-5 bg-surface-container-lowest/80 backdrop-blur-md border border-secondary/80 text-secondary font-label-sm text-label-sm uppercase tracking-[0.2em] rounded-DEFAULT glow-gold overflow-hidden cursor-pointer" href="#explore">
-<span class="relative z-10 flex items-center gap-3">
-                    Explore the Saga
-                    <span class="material-symbols-outlined text-[18px] transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
-</span>
-</a>
-</div>
-<!-- Scroll indicator -->
-<div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center animate-bounce opacity-60">
-<span class="w-px h-12 bg-gradient-to-b from-transparent to-secondary mb-2"></span>
-<span class="material-symbols-outlined text-secondary text-[20px]">keyboard_arrow_down</span>
-</div>
+<section class="relative z-10 w-full min-h-screen flex items-center justify-center overflow-hidden pt-36 pb-20" id="top">
+  <!-- Layer A: Interactive Animus Simulation Background (Active in Interactive Assassin Mode) -->
+  <div id="hero-animus-container" class="absolute inset-0 z-0 transition-opacity duration-700 overflow-hidden pointer-events-none opacity-100">
+    <canvas id="animus-canvas" class="w-full h-full block pointer-events-auto"></canvas>
+    <!-- Animus HUD Telemetry Watermarks -->
+    <div class="absolute top-28 left-8 sm:left-14 pointer-events-none z-10 flex flex-col gap-1 font-mono text-[10px] text-cyan-400/60 tracking-widest hidden md:flex select-none">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="text-cyan-300 font-bold">ANIMUS // MEMORY CORRIDOR v4.2</span>
+      </div>
+      <span class="text-white/40">GENETIC SEQUENCE: ACTIVE</span>
+      <span class="text-white/40" id="animus-synch-hud">SYNCHRONIZATION: 100.0%</span>
+    </div>
+    <div class="absolute bottom-8 right-8 sm:right-14 pointer-events-none z-10 flex flex-col items-end gap-1 font-mono text-[10px] text-secondary/60 tracking-widest hidden md:flex select-none">
+      <span class="text-secondary/80 font-bold" id="animus-memory-hud">MEMORY BLOCK: 01 // 1191 CE</span>
+      <span class="text-white/40">DNA INTEGRITY: STABLE</span>
+      <span class="text-white/30">ABSTERGO INDUSTRIES NEURAL LINK</span>
+    </div>
+    <!-- Vignette gradients for text readability -->
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#07080b] via-transparent to-black/80 z-10"></div>
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#07080b]/90 via-[#07080b]/30 to-transparent z-10"></div>
+  </div>
+
+  <!-- Layer B: Cinematic Video Theater Background (Active in Trailer Loop Mode) -->
+  <div id="hero-video-container" class="absolute inset-0 z-0 transition-opacity duration-700 overflow-hidden pointer-events-none opacity-0">
+    <video id="hero-local-video" class="w-full h-full object-cover pointer-events-none brightness-85 contrast-115 transition-opacity duration-500" autoplay muted loop playsinline preload="auto" src="/videos/hero-ac1.mp4"></video>
+    <!-- Cinematic Gradients for Video Mode -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#07080b] via-[#07080b]/40 to-black/80 z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#07080b]/90 via-[#07080b]/40 to-transparent z-10"></div>
+    <div class="absolute inset-0 bg-black/25 z-10"></div>
+  </div>
+
+  <!-- Top Hero Controls: Mode Switcher & Audio Toggle -->
+  <div class="absolute top-24 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-3 w-max">
+    <div class="p-1 rounded-full bg-black/85 backdrop-blur-md border border-white/15 flex items-center shadow-2xl">
+      <button id="hero-mode-char" class="px-4 py-1.5 rounded-full bg-secondary text-black font-label-sm text-[11px] uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-gold">
+        <span class="material-symbols-outlined text-[15px]">person_outline</span>
+        <span>Interactive Assassin</span>
+      </button>
+      <button id="hero-mode-video" class="px-4 py-1.5 rounded-full text-on-surface-variant hover:text-white font-label-sm text-[11px] uppercase tracking-wider font-semibold transition-all cursor-pointer flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[15px]">movie</span>
+        <span>Trailer Loop</span>
+      </button>
+    </div>
+    <button id="hero-video-mute" class="hidden px-3.5 py-2 rounded-full bg-black/80 backdrop-blur-md border border-secondary/50 text-secondary hover:text-white hover:border-secondary font-label-sm text-[11px] uppercase tracking-wider transition-all cursor-pointer items-center gap-1.5 shadow-xl">
+      <span class="material-symbols-outlined text-[16px]">volume_off</span>
+      <span class="mute-label hidden sm:inline">Muted</span>
+    </button>
+  </div>
+
+  <!-- Hero Content Grid: Two Columns on Desktop -->
+  <div class="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+    <!-- Left Column: Typography, Story & Actions (Cols 1-7) -->
+    <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left pt-12 lg:pt-0">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        <span class="ac-chapter uppercase tracking-[0.25em] text-[11px] font-semibold text-secondary">Memory Sequence — Masyaf & Holy Land · 1191 CE</span>
+      </div>
+      <h1 class="ac-glitch font-headline-xl text-[38px] xs:text-[48px] sm:text-[60px] md:text-[68px] lg:text-[76px] text-primary uppercase mb-4 text-shadow-cinematic tracking-widest leading-[1.05]" data-text="ASSASSIN'S CREED">
+        ASSASSIN'S CREED
+      </h1>
+      <p id="hero-quote-text" class="font-headline-md text-base sm:text-lg md:text-xl text-secondary/90 max-w-xl mb-8 text-shadow-cinematic font-light italic leading-relaxed">
+        “Only a mind free of impediments is capable of grasping the chaotic beauty of the world.”
+      </p>
+
+      <!-- Action Group: Interactive Assassin Mode -->
+      <div id="hero-actions-char" class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8">
+        <a class="group relative inline-flex items-center justify-center px-8 py-4 bg-secondary text-on-secondary font-label-sm text-xs uppercase tracking-[0.2em] rounded-md glow-gold cursor-pointer font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all" href="#explore">
+          <span class="flex items-center gap-2">
+            Explore the Saga
+            <span class="material-symbols-outlined text-[17px] transition-transform duration-300 group-hover:translate-x-1">arrow_forward</span>
+          </span>
+        </a>
+        <button id="hero-watch-trailer-btn" type="button" class="group inline-flex items-center justify-center px-7 py-4 bg-surface-container-lowest/80 backdrop-blur-md border border-secondary/50 text-secondary hover:text-white hover:border-secondary font-label-sm text-xs uppercase tracking-[0.2em] rounded-md transition-all cursor-pointer font-semibold shadow-xl">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-secondary group-hover:scale-110 transition-transform">movie</span>
+            Watch Trailer Loop
+          </span>
+        </button>
+      </div>
+
+      <!-- Action Group: Trailer Loop Mode -->
+      <div id="hero-actions-trailer" class="hidden flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-8">
+        <button id="hero-trailer-prev" type="button" class="px-5 py-3.5 rounded-md bg-black/85 hover:bg-black border border-white/20 text-white font-label-sm text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer flex items-center gap-2 shadow-xl hover:border-secondary active:scale-95">
+          <span class="material-symbols-outlined text-[18px] text-secondary">skip_previous</span>
+          <span>Previous Part</span>
+        </button>
+        <button id="hero-trailer-next" type="button" class="px-5 py-3.5 rounded-md bg-secondary text-black font-label-sm text-xs uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-2 shadow-gold hover:scale-105 active:scale-95">
+          <span>Next Part</span>
+          <span class="material-symbols-outlined text-[18px]">skip_next</span>
+        </button>
+        <button id="hero-return-char-btn" type="button" class="px-5 py-3.5 rounded-md bg-surface-container-lowest/80 backdrop-blur-md border border-white/20 text-on-surface-variant hover:text-white hover:border-secondary font-label-sm text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer flex items-center gap-2 shadow-xl">
+          <span class="material-symbols-outlined text-[18px] text-secondary">person_outline</span>
+          <span>Interactive 3D Assassin</span>
+        </button>
+        <a id="hero-yt-direct-link" href="https://www.youtube.com/watch?v=cc-ClutaN_I" target="_blank" rel="noopener noreferrer" class="px-4 py-3.5 rounded-md bg-black/70 hover:bg-red-700/80 border border-white/10 hover:border-red-500 text-white font-label-sm text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer flex items-center gap-2 shadow-xl">
+          <span class="material-symbols-outlined text-[18px] text-red-500">smart_display</span>
+          <span>4K Cinema</span>
+        </a>
+      </div>
+
+      <!-- Quick Selector Bar -->
+      <div class="w-full">
+        <p class="text-[10px] uppercase font-label-sm tracking-[0.25em] text-on-surface-variant/70 mb-2.5 font-semibold flex items-center gap-1.5 justify-center lg:justify-start">
+          <span class="material-symbols-outlined text-[13px] text-secondary">explore</span> Select Memory Era (Part 1 to 5):
+        </p>
+        <div id="hero-character-nav" class="flex flex-wrap items-center justify-center lg:justify-start gap-2"></div>
+        <div id="hero-trailer-nav" class="hidden flex flex-wrap items-center justify-center lg:justify-start gap-2"></div>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive 3D Assassin Stage (Cols 8-12) -->
+    <div id="hero-3d-scene-col" class="lg:col-span-5 flex justify-center items-center transition-all duration-500">
+      <div id="hero-3d-scene" class="relative group [perspective:1200px] select-none pt-12 pb-4 px-2 transition-all duration-500">
+        <!-- Floating 3D Character Card (overflow-visible allows head and weapons to pop out) -->
+        <div id="hero-char-card" class="relative w-[300px] xs:w-[330px] sm:w-[360px] md:w-[390px] aspect-[3/4.3] [transform-style:preserve-3d] cursor-pointer transition-transform duration-100 ease-out select-none">
+          
+          <!-- Outer Animus Frame Box: clipped to rounded rectangle with cyber corners -->
+          <div class="absolute inset-0 rounded-2xl overflow-hidden border border-secondary/60 bg-[#07090d] shadow-[0_30px_80px_-15px_rgba(0,0,0,0.95)] [transform:translateZ(0px)]">
+            
+            <!-- Layer 1: Ambient Wallpaper Background inside Card -->
+            <div class="absolute inset-0 overflow-hidden">
+              <img id="hero-card-bg" class="w-full h-full object-cover brightness-60 contrast-125 scale-110 transition-all duration-700" src="/wallpapers/ac1.png" alt="Atmosphere"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#07090d] via-[#07090d]/50 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-b from-[#07090d]/90 via-transparent to-[#07090d]/80"></div>
+              <!-- Animus Scanline Pattern -->
+              <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.45)_51%)] bg-[length:100%_4px] opacity-40 pointer-events-none"></div>
+            </div>
+
+            <!-- Layer 1.5: Living Atmospheric Particle Canvas -->
+            <canvas id="hero-card-particles" class="absolute inset-0 w-full h-full pointer-events-none z-5"></canvas>
+
+            <!-- Abstergo Animus Cyber-Corners -->
+            <div class="absolute top-2.5 left-2.5 w-3.5 h-3.5 border-t-2 border-l-2 border-secondary/90 pointer-events-none z-15"></div>
+            <div class="absolute top-2.5 right-2.5 w-3.5 h-3.5 border-t-2 border-r-2 border-secondary/90 pointer-events-none z-15"></div>
+            <div class="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 border-b-2 border-l-2 border-secondary/90 pointer-events-none z-15"></div>
+            <div class="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 border-b-2 border-r-2 border-secondary/90 pointer-events-none z-15"></div>
+
+            <!-- Animus Scanning Laser Beam across top -->
+            <div class="absolute top-0 inset-x-0 h-[2px] overflow-hidden pointer-events-none z-20">
+              <div class="w-full h-full ac-laser-line"></div>
+            </div>
+
+            <!-- Bottom Telemetry Ribbon inside Frame -->
+            <div class="absolute bottom-1.5 inset-x-8 flex items-center justify-between text-[8px] font-mono text-secondary/60 tracking-widest uppercase pointer-events-none z-15">
+              <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-secondary animate-pulse"></span>SYNCH: 100%</span>
+              <span id="hero-card-mem-tag">ABSTERGO // MEM-01</span>
+            </div>
+
+            <!-- Specular Holographic Glare Sheen -->
+            <div id="hero-card-glare" class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.24) 0%, rgba(233,195,73,0.12) 35%, transparent 70%); mix-blend-mode: screen;"></div>
+
+            <!-- Eagle Vision Luminous Matrix Glow -->
+            <div id="hero-card-eagle-glow" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 rounded-2xl bg-gradient-to-t from-secondary/35 via-cyan-400/25 to-transparent z-10"></div>
+          </div>
+
+          <!-- Layer 2: Main Character Art (POPS OUT OF THE FRAME IN TRUE 3D!) -->
+          <div id="hero-char-popout" class="absolute inset-x-0 bottom-0 h-[118%] flex items-end justify-center pointer-events-none [transform:translateZ(75px)] transition-transform duration-200">
+            <img id="hero-char-img" class="w-auto h-full max-w-[125%] object-contain object-bottom ac-popout-img transition-all duration-500" src="/assets/popout-altair.png" alt="Assassin Character" style="mask-image: linear-gradient(to top, transparent 0%, black 12%, black 100%); -webkit-mask-image: linear-gradient(to top, transparent 0%, black 12%, black 100%);"/>
+          </div>
+
+          <!-- Layer 3: Hidden Blade Slash Strike Overlay (translateZ 90px) -->
+          <div id="hero-slash-fx" class="absolute inset-0 pointer-events-none z-30 opacity-0 [transform:translateZ(90px)]">
+            <svg class="w-full h-full" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 50 80 L 350 420" stroke="url(#slash-grad)" stroke-width="6" stroke-linecap="round"/>
+              <path d="M 60 70 L 340 430" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="slash-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="35%" stop-color="#ffe088"/>
+                  <stop offset="75%" stop-color="#e9c349"/>
+                  <stop offset="100%" stop-color="#ff4444"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <!-- Layer 4: Authentic Animus HUD Overlays (Floats at translateZ 85px) -->
+          <div class="absolute inset-0 p-5 flex flex-col justify-between pointer-events-none z-25 [transform:translateZ(85px)]">
+            <!-- Top HUD: Identity & Era -->
+            <div class="flex items-center justify-between pt-2">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/85 backdrop-blur-md border border-secondary/50 shadow-2xl">
+                <img src="/assets/logos/ac-insignia.svg" alt="Creed" class="w-4 h-4 opacity-90 drop-shadow-[0_0_8px_rgba(233,195,73,0.6)]"/>
+                <span id="hero-card-name" class="font-cinzel text-xs font-bold text-primary tracking-widest uppercase">Altaïr Ibn-La'Ahad</span>
+              </div>
+              <span id="hero-card-era" class="px-2.5 py-1 rounded-md bg-black/85 backdrop-blur-md border border-white/20 font-mono text-[11px] text-secondary tracking-wider font-semibold shadow-xl">1191 CE</span>
+            </div>
+
+            <!-- Middle: 3D Telemetry (Visible on hover) -->
+            <div class="self-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-end gap-0.5 font-mono text-[9px] text-secondary/90 tracking-widest bg-black/75 px-2.5 py-1 rounded border border-secondary/30 backdrop-blur-sm shadow-xl">
+              <span id="hero-hud-rot">ROT: 0° / 0°</span>
+              <span class="text-white/50">ANIMUS 3D STEREO</span>
+            </div>
+
+            <!-- Bottom: Combat Style & Interactive Eagle Vision Button -->
+            <div class="flex flex-col gap-2.5 pointer-events-auto">
+              <div class="flex items-center justify-between text-[11px] font-medium px-1 text-shadow-cinematic">
+                <span id="hero-card-archetype" class="flex items-center gap-1.5 text-secondary font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                  Legendary Master Assassin
+                </span>
+                <span class="text-[10px] text-secondary/80 uppercase tracking-widest font-mono flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">touch_app</span> Click to Strike
+                </span>
+              </div>
+
+              <!-- Interactive Eagle Vision Button -->
+              <button id="hero-eagle-btn" type="button" class="w-full py-2.5 px-4 rounded-xl bg-black/90 hover:bg-secondary hover:text-black border border-secondary/70 text-secondary transition-all flex items-center justify-center gap-2 font-label-sm text-xs uppercase tracking-widest font-bold shadow-2xl cursor-pointer group/btn active:scale-95 backdrop-blur-md">
+                <span class="material-symbols-outlined text-[18px] group-hover/btn:scale-110 transition-transform">visibility</span>
+                <span id="hero-eagle-btn-text">Activate Eagle Vision</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 font-mono opacity-80">[V]</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Ambient Shadow behind card -->
+          <div id="hero-card-shadow" class="absolute inset-4 -bottom-6 bg-secondary/20 rounded-3xl blur-2xl -z-10 transition-all duration-300 pointer-events-none opacity-60 group-hover:opacity-100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Down Indicator -->
+  <a href="#explore" class="absolute bottom-3 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center animate-bounce opacity-60 hover:opacity-100 transition-opacity text-secondary cursor-pointer">
+    <span class="material-symbols-outlined text-[18px]">keyboard_arrow_down</span>
+  </a>
 </section>
 <!-- About Section -->
-<section class="relative z-10 w-full py-24 md:py-32 overflow-hidden flex items-center" id="explore">
-<div class="absolute inset-0 z-0 parallax-bg opacity-30" style="background-image: url('/assets/origins.png');"></div>
-<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30 z-10"></div>
+<section class="relative z-10 w-full py-28 md:py-36 overflow-hidden flex items-center" id="explore">
+<div class="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000 scale-105" style="background-image: url('/wallpapers/origins.jpg');"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-[#07080b] via-[#07080b]/90 to-[#07080b]/55 z-10"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#07080b] via-transparent to-[#07080b] z-10"></div>
 <div class="relative z-20 px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto">
 <div class="max-w-2xl ac-blade-reveal">
 <span class="ac-chapter mb-6">Memory Sequence 02 — The Creed</span>
@@ -150,7 +345,9 @@
 </div>
 </section>
 <!-- Main Games Horizontal Scroll -->
-<section class="w-full py-24 bg-surface-container-lowest/85 border-y border-outline-variant/10 relative z-20" id="saga">
+<section class="w-full py-28 bg-[#090b0f] border-y border-white/5 relative z-20" id="saga">
+<div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent pointer-events-none"></div>
 <div class="px-margin-mobile md:px-margin-desktop mb-12 flex justify-between items-end reveal">
 <div>
 <span class="ac-chapter mb-3">Memory Sequence 03 — The Animus</span>
@@ -172,7 +369,7 @@
 <div class="px-margin-mobile md:px-margin-desktop mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-8" id="saga-grid"></div>
 </section>
 <!-- Timeline Section -->
-<section class="py-24 px-margin-mobile md:px-margin-desktop bg-background/85 relative z-20" id="timeline">
+<section class="py-28 px-margin-mobile md:px-margin-desktop bg-[#07080b]/90 relative z-20" id="timeline">
 <div class="max-w-4xl mx-auto text-center mb-16 reveal">
 <span class="ac-chapter mb-4 justify-center">Memory Sequence 04 — Historical Eras</span>
 <h2 class="font-headline-lg text-[26px] sm:text-[32px] md:text-headline-lg text-primary uppercase tracking-widest mb-4">Historical Eras</h2>
@@ -180,12 +377,14 @@
 </div>
 <div class="max-w-3xl mx-auto relative" id="timeline-track">
 <!-- Timeline Line -->
-<div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-outline-variant to-transparent transform md:-translate-x-1/2"></div>
+<div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-secondary/40 to-transparent transform md:-translate-x-1/2"></div>
 <!-- Timeline items injected by JS -->
 </div>
 </section>
 <!-- Lore Section -->
-<section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest/85 border-y border-outline-variant/10 relative z-20" id="lore">
+<section class="py-28 px-margin-mobile md:px-margin-desktop bg-[#090b0f] border-y border-white/5 relative z-20" id="lore">
+<div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/25 to-transparent pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/25 to-transparent pointer-events-none"></div>
 <div class="max-w-container-max mx-auto">
 <div class="text-center mb-16 reveal">
 <span class="ac-chapter mb-4 justify-center">Memory Sequence 05 — The Lore</span>
@@ -194,17 +393,17 @@
 </div>
 <!-- The Three Tenets -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 reveal">
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8 hover:border-secondary/40 transition-colors group cursor-default">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 hover:border-secondary/40 transition-colors group cursor-default ac-card-glow">
 <span class="material-symbols-outlined text-secondary text-[36px] mb-4 block group-hover:scale-110 transition-transform">style</span>
 <h3 class="font-headline-md text-primary mb-3">Stay Your Blade</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">Never harm the innocent. The Assassin's blade is a tool of precision, not of mindless slaughter — discipline is the mark of a true master.</p>
 </div>
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8 hover:border-secondary/40 transition-colors group cursor-default">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 hover:border-secondary/40 transition-colors group cursor-default ac-card-glow">
 <span class="material-symbols-outlined text-secondary text-[36px] mb-4 block group-hover:scale-110 transition-transform">visibility</span>
 <h3 class="font-headline-md text-primary mb-3">Always Be Discreet</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">Blend with the crowd. Strike from the shadows. The Assassin walks among the people, unseen until the moment of truth arrives.</p>
 </div>
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8 hover:border-secondary/40 transition-colors group cursor-default">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 hover:border-secondary/40 transition-colors group cursor-default ac-card-glow">
 <span class="material-symbols-outlined text-secondary text-[36px] mb-4 block group-hover:scale-110 transition-transform">shield</span>
 <h3 class="font-headline-md text-primary mb-3">Never Compromise the Brotherhood</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">The order endures beyond any single life. Its secrets, its members, and its purpose must be protected at all costs — even one's own.</p>
@@ -212,7 +411,7 @@
 </div>
 <!-- Assassins vs Templars -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-<div class="bg-gradient-to-br from-surface-container-low to-surface-container-lowest border border-outline-variant/20 rounded-lg p-8 md:p-10 reveal">
+<div class="bg-gradient-to-br from-surface-container-low to-surface-container-lowest border border-white/10 rounded-xl p-8 md:p-10 reveal ac-card-glow">
 <div class="flex items-center gap-4 mb-6">
 <img src="/assets/logos/ac-insignia.svg" alt="" class="h-12 w-12" width="48" height="48"/>
 <div>
@@ -221,9 +420,9 @@
 </div>
 </div>
 <p class="text-on-surface-variant leading-relaxed mb-4">The Assassin Brotherhood, originally founded as the Hidden Ones by Bayek of Siwa in ancient Egypt, fights for the freedom of humanity. They believe that free will — even flawed — is superior to ordered subjugation.</p>
-<p class="text-on-surface-variant leading-relaxed">Through the centuries, legendary figures such as <span class="text-secondary">Altaïr Ibn-La'Ahad</span>, <span class="text-secondary">Ezio Auditore</span>, <span class="text-secondary">Connor Kenway</span>, and <span class="text-secondary">Eivor Varinsdottir</span> have carried the Creed forward.</p>
+<p class="text-on-surface-variant leading-relaxed">Through the centuries, legendary figures such as <span class="text-secondary font-semibold">Altaïr Ibn-La'Ahad</span>, <span class="text-secondary font-semibold">Ezio Auditore</span>, <span class="text-secondary font-semibold">Connor Kenway</span>, and <span class="text-secondary font-semibold">Eivor Varinsdottir</span> have carried the Creed forward.</p>
 </div>
-<div class="bg-gradient-to-br from-surface-container-low to-surface-container-lowest border border-outline-variant/20 rounded-lg p-8 md:p-10 reveal">
+<div class="bg-gradient-to-br from-surface-container-low to-surface-container-lowest border border-white/10 rounded-xl p-8 md:p-10 reveal ac-card-glow">
 <div class="flex items-center gap-4 mb-6">
 <img src="/assets/logos/abstergo.svg" alt="" class="h-12 w-12" width="48" height="48"/>
 <div>
@@ -232,20 +431,20 @@
 </div>
 </div>
 <p class="text-on-surface-variant leading-relaxed mb-4">The Templar Order believes that humanity cannot be trusted with its own freedom. They seek to guide civilization through order and control, using Isu artifacts — the Pieces of Eden — to shape the course of history.</p>
-<p class="text-on-surface-variant leading-relaxed">In the modern era, the Templars operate through <span class="text-secondary">Abstergo Industries</span>, a global corporation that develops the Animus technology to locate Isu artifacts through genetic memory.</p>
+<p class="text-on-surface-variant leading-relaxed">In the modern era, the Templars operate through <span class="text-secondary font-semibold">Abstergo Industries</span>, a global corporation that develops the Animus technology to locate Isu artifacts through genetic memory.</p>
 </div>
 </div>
 <!-- Isu / Pieces of Eden / Animus -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 ac-card-glow">
 <h3 class="font-headline-md text-primary mb-4 flex items-center gap-3"><span class="material-symbols-outlined text-secondary">auto_awesome</span>The Isu</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">A precursor civilization that preceded humanity. The Isu created the Pieces of Eden and engineered Homo sapiens as a servant species. Their civilization collapsed in a great cataclysm, but their artifacts endure.</p>
 </div>
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 ac-card-glow">
 <h3 class="font-headline-md text-primary mb-4 flex items-center gap-3"><span class="material-symbols-outlined text-secondary">deployed_code</span>Pieces of Eden</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">Powerful Isu artifacts — Apples of Eden, Shrouds, Staffs, Swords — capable of manipulating minds, healing, and projecting illusions. Both Assassins and Templars seek them to tip the balance of their eternal war.</p>
 </div>
-<div class="bg-surface-container-low border border-outline-variant/20 rounded-lg p-8">
+<div class="bg-surface-container-low border border-white/10 rounded-xl p-8 ac-card-glow">
 <h3 class="font-headline-md text-primary mb-4 flex items-center gap-3"><span class="material-symbols-outlined text-secondary">memory</span>The Animus</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">A machine that reads genetic memory, allowing users to relive the experiences of their ancestors. Originally developed by Abstergo, it is the bridge between past and present — and the gateway through which history becomes our playground.</p>
 </div>
@@ -253,7 +452,7 @@
 </div>
 </section>
 <!-- Ubisoft Store Section -->
-<section class="py-24 px-margin-mobile md:px-margin-desktop bg-background/85 relative z-20" id="store">
+<section class="py-28 px-margin-mobile md:px-margin-desktop bg-[#07080b]/90 relative z-20" id="store">
 <div class="max-w-container-max mx-auto">
 <div class="text-center mb-16 reveal">
 <span class="ac-chapter mb-4 justify-center">Memory Sequence 06 — The Arsenal</span>
@@ -319,32 +518,43 @@
 </div>
 </footer>
 <script>
-    // Header Scroll Logic
+    // Header Scroll Logic (state-guarded to avoid DOM thrashing)
+    let headerScrolled = false;
+    const header = document.getElementById('main-header');
     window.addEventListener('scroll', () => {
-        const header = document.getElementById('main-header');
-        if (window.scrollY > 50) {
-            header.classList.add('bg-black/40', 'border-b', 'border-white/5');
-            header.classList.remove('bg-black/10');
-        } else {
-            header.classList.add('bg-black/10');
-            header.classList.remove('bg-black/40', 'border-b', 'border-white/5');
-        }
-    });
-
-    // Reveal on Scroll (handles both .reveal and .ac-blade-reveal) — exposed globally for main.js
-    window.reveal = function reveal() {
-        var els = document.querySelectorAll(".reveal, .ac-blade-reveal");
-        for (var i = 0; i < els.length; i++) {
-            var windowHeight = window.innerHeight;
-            var elementTop = els[i].getBoundingClientRect().top;
-            var elementVisible = 150;
-            if (elementTop < windowHeight - elementVisible) {
-                els[i].classList.add("active");
+        const isPast = window.scrollY > 50;
+        if (isPast !== headerScrolled && header) {
+            headerScrolled = isPast;
+            if (headerScrolled) {
+                header.classList.add('bg-black/40', 'border-b', 'border-white/5');
+                header.classList.remove('bg-black/10');
+            } else {
+                header.classList.add('bg-black/10');
+                header.classList.remove('bg-black/40', 'border-b', 'border-white/5');
             }
         }
+    }, { passive: true });
+
+    // High-Performance Reveal via IntersectionObserver (zero layout reflows on scroll)
+    window.reveal = function reveal() {
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -60px 0px' });
+
+            document.querySelectorAll('.reveal:not(.active), .ac-blade-reveal:not(.active)').forEach((el) => {
+                observer.observe(el);
+            });
+        } else {
+            document.querySelectorAll('.reveal, .ac-blade-reveal').forEach((el) => el.classList.add('active'));
+        }
     };
-    window.addEventListener("scroll", reveal, { passive: true });
-    reveal(); // Trigger on load
+    reveal();
 
     // Close mobile menu on nav link click & smooth-scroll with header offset
     document.querySelectorAll('[data-nav]').forEach(function (link) {
@@ -364,37 +574,6 @@
             window.scrollTo({ top: top, behavior: 'smooth' });
         });
     });
-
-    // Particles — reduced count on mobile / reduced motion
-    (function () {
-        const particlesContainer = document.getElementById('particles-container');
-        if (!particlesContainer) return;
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const particleCount = reduced ? 0 : (isMobile ? 14 : 30);
-
-        for (let i = 0; i < particleCount; i++) {
-            createParticle();
-        }
-
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-
-            const size = Math.random() * 4 + 1;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.top = `${Math.random() * 100}vh`;
-
-            const duration = Math.random() * 10 + 10;
-            const delay = Math.random() * 5;
-            particle.style.animation = `drift ${duration}s linear ${delay}s infinite`;
-
-            particlesContainer.appendChild(particle);
-        }
-    })();
 </script>
 
 <!-- Search Overlay -->
@@ -431,36 +610,68 @@
 </div>
 
 <!-- Game Details Modal -->
-<div id="game-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden opacity-0 scale-95 transition-all duration-300 flex items-center justify-center p-4">
-    <div class="bg-surface-container-low border border-outline-variant/30 max-w-4xl w-full rounded-xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
-        <div class="p-8 md:w-1/2 flex flex-col justify-center border-b md:border-b-0 md:border-r border-outline-variant/20 relative">
-            <p id="modal-year" class="text-secondary font-label-sm uppercase tracking-widest mb-2"></p>
-            <h2 id="modal-title" class="font-headline-xl text-[28px] sm:text-[40px] text-primary mb-6"></h2>
-            <p id="modal-about" class="text-on-surface-variant font-body-lg mb-8 leading-relaxed"></p>
-            <a id="trailer-btn" target="_blank" href="#" class="inline-flex items-center gap-3 w-fit px-8 py-4 bg-primary text-on-primary font-label-sm uppercase tracking-widest rounded-full hover:bg-secondary transition-colors">
-                <span class="material-symbols-outlined">play_arrow</span> Watch Trailer
-            </a>
-        </div>
-        <div class="p-8 md:w-1/2 bg-surface flex flex-col justify-center overflow-y-auto">
-            <h3 class="font-headline-md text-primary mb-6 uppercase tracking-widest">System Requirements</h3>
-            <div class="mb-6 bg-surface-container p-6 rounded-lg border border-outline-variant/20">
-                <h4 class="text-secondary font-label-sm uppercase mb-4 tracking-widest flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">speed</span> Minimum</h4>
-                <ul class="text-sm text-on-surface-variant space-y-3">
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">CPU</strong> <span id="min-cpu"></span></li>
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">RAM</strong> <span id="min-ram"></span></li>
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">GPU</strong> <span id="min-gpu"></span></li>
-                </ul>
+<div id="game-modal" class="fixed inset-0 z-[100] bg-black/85 backdrop-blur-md hidden opacity-0 scale-95 transition-all duration-300 flex items-center justify-center p-3 sm:p-6 md:p-8">
+    <div class="bg-surface-container-low border border-white/15 max-w-5xl w-full rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex flex-col max-h-[92vh] relative">
+        <!-- Modal Header Backdrop Banner -->
+        <div class="relative w-full h-44 sm:h-56 md:h-64 overflow-hidden flex-shrink-0 bg-black">
+            <img id="modal-backdrop" src="" alt="" class="w-full h-full object-cover object-center opacity-40"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/60 to-transparent"></div>
+            
+            <!-- Poster & Title overlay in banner -->
+            <div class="absolute bottom-5 left-6 md:left-8 right-16 flex items-end gap-5">
+                <img id="modal-poster" src="" alt="" class="w-20 sm:w-24 md:w-28 aspect-[3/4] object-cover object-top rounded-lg shadow-2xl border border-white/20 flex-shrink-0 hidden xs:block"/>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                        <span id="modal-year" class="px-2.5 py-0.5 rounded bg-secondary/15 border border-secondary/40 text-secondary font-label-sm text-[11px] uppercase tracking-widest font-bold"></span>
+                        <span id="modal-period" class="px-2.5 py-0.5 rounded bg-white/10 border border-white/15 text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider hidden sm:inline-block"></span>
+                    </div>
+                    <h2 id="modal-title" class="font-headline-xl text-2xl sm:text-3xl md:text-4xl text-primary font-bold tracking-tight leading-tight"></h2>
+                    <p class="text-secondary/90 text-xs sm:text-sm font-medium mt-1 flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-secondary">person</span>Protagonist: <span id="modal-protagonist" class="text-primary font-semibold"></span></p>
+                </div>
             </div>
-            <div class="bg-surface-container p-6 rounded-lg border border-outline-variant/20">
-                <h4 class="text-secondary font-label-sm uppercase mb-4 tracking-widest flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">rocket_launch</span> Recommended</h4>
-                <ul class="text-sm text-on-surface-variant space-y-3">
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">CPU</strong> <span id="rec-cpu"></span></li>
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">RAM</strong> <span id="rec-ram"></span></li>
-                    <li class="flex flex-col"><strong class="text-primary text-xs uppercase opacity-70 mb-1">GPU</strong> <span id="rec-gpu"></span></li>
-                </ul>
+
+            <button id="modal-close" class="absolute top-4 right-4 text-primary bg-black/60 hover:bg-secondary hover:text-black rounded-full p-2.5 transition-all z-50 cursor-pointer border border-white/15 shadow-lg" aria-label="Close modal">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Body Content -->
+        <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 overflow-y-auto">
+            <div class="md:w-1/2 flex flex-col justify-between">
+                <div>
+                    <span class="ac-chapter mb-3">Animus Memory Briefing</span>
+                    <p id="modal-about" class="text-on-surface-variant font-body-lg text-sm sm:text-base mb-6 leading-relaxed"></p>
+                </div>
+                <div class="pt-4 border-t border-white/10 flex items-center gap-4">
+                    <a id="trailer-btn" target="_blank" href="#" class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-secondary text-on-secondary font-label-sm text-xs uppercase tracking-widest rounded-lg hover:bg-secondary-fixed transition-colors font-bold shadow-lg">
+                        <span class="material-symbols-outlined text-[18px]">play_circle</span> Watch Official Trailer
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex flex-col">
+                <h3 class="font-headline-md text-primary text-base md:text-lg mb-4 uppercase tracking-widest flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">terminal</span> System Requirements (PC)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-surface-container/70 p-4 rounded-xl border border-white/10">
+                        <h4 class="text-secondary font-label-sm text-xs uppercase mb-3 tracking-widest flex items-center gap-1.5 font-bold"><span class="material-symbols-outlined text-[16px]">speed</span> Minimum</h4>
+                        <ul class="text-xs text-on-surface-variant space-y-2.5">
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">CPU</strong> <span id="min-cpu" class="font-mono text-xs"></span></li>
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">RAM</strong> <span id="min-ram" class="font-mono text-xs"></span></li>
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">GPU</strong> <span id="min-gpu" class="font-mono text-xs"></span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-surface-container/70 p-4 rounded-xl border border-white/10">
+                        <h4 class="text-secondary font-label-sm text-xs uppercase mb-3 tracking-widest flex items-center gap-2 font-bold"><span class="material-symbols-outlined text-[16px]">rocket_launch</span> Recommended</h4>
+                        <ul class="text-xs text-on-surface-variant space-y-2.5">
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">CPU</strong> <span id="rec-cpu" class="font-mono text-xs"></span></li>
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">RAM</strong> <span id="rec-ram" class="font-mono text-xs"></span></li>
+                            <li class="flex flex-col"><strong class="text-primary text-[10px] uppercase opacity-70">GPU</strong> <span id="rec-gpu" class="font-mono text-xs"></span></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <button id="modal-close" class="absolute top-4 right-4 text-primary bg-black/50 hover:bg-secondary hover:text-black rounded-full p-2 transition-colors z-50 cursor-pointer"><span class="material-symbols-outlined">close</span></button>
     </div>
 </div>
 
@@ -478,6 +689,7 @@
 
 <!-- ===== Eagle Vision overlay ===== -->
 <div class="ac-eagle" id="ac-eagle" aria-hidden="true">
+    <div class="ac-eagle__sonar"></div>
     <div class="ac-eagle__cross"></div>
 </div>
 

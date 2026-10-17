@@ -47,7 +47,7 @@ function initAnimusIntro() {
     sessionStorage.setItem('ac-intro-seen', '1');
     setTimeout(() => { if (intro) intro.style.display = 'none'; }, 900);
     window.dispatchEvent(new CustomEvent('ac-intro-done'));
-    window.dispatchEvent(new Event('resize'));
+    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
   };
 
   const skip = () => hide();
@@ -69,23 +69,51 @@ function initAnimusIntro() {
 }
 
 /* ------------------------------------------------------------------
-   Eagle Vision — toggle desaturated highlight overlay (desktop)
+   Eagle Vision — toggle desaturated highlight overlay & sound
 ------------------------------------------------------------------ */
-function initEagleVision() {
-  const btn = document.getElementById('btn-eagle');
+export function toggleEagleVision(force) {
   const overlay = document.getElementById('ac-eagle');
-  if (!btn || !overlay) return;
+  const btn = document.getElementById('btn-eagle');
+  const heroBtn = document.getElementById('hero-eagle-btn');
+  const heroBtnText = document.getElementById('hero-eagle-btn-text');
+  if (!overlay) return;
 
-  const toggle = (force) => {
-    const on = typeof force === 'boolean' ? force : !overlay.classList.contains('ac-eagle--on');
-    overlay.classList.toggle('ac-eagle--on', on);
+  const on = typeof force === 'boolean' ? force : !overlay.classList.contains('ac-eagle--on');
+  overlay.classList.toggle('ac-eagle--on', on);
+  document.documentElement.classList.toggle('ac-eagle-active', on);
+
+  if (btn) {
     btn.classList.toggle('text-secondary', on);
     btn.setAttribute('aria-pressed', String(on));
-  };
-  btn.addEventListener('click', () => toggle());
+  }
+
+  if (heroBtn) {
+    if (on) {
+      heroBtn.className = 'w-full py-2.5 px-4 rounded-xl bg-secondary text-black border border-secondary shadow-[0_0_25px_rgba(233,195,73,0.7)] transition-all flex items-center justify-center gap-2 font-label-sm text-xs uppercase tracking-widest font-bold cursor-pointer';
+      if (heroBtnText) heroBtnText.textContent = 'Eagle Vision Active';
+    } else {
+      heroBtn.className = 'w-full py-2.5 px-4 rounded-xl bg-black/85 hover:bg-secondary hover:text-black border border-secondary/60 text-secondary transition-all flex items-center justify-center gap-2 font-label-sm text-xs uppercase tracking-widest font-bold shadow-2xl cursor-pointer group/btn active:scale-95';
+      if (heroBtnText) heroBtnText.textContent = 'Activate Eagle Vision';
+    }
+  }
+
+  if (window.animusAudio) {
+    window.animusAudio.playEaglePulse();
+  }
+}
+window.toggleEagleVision = toggleEagleVision;
+
+function initEagleVision() {
+  const btn = document.getElementById('btn-eagle');
+  if (btn) {
+    btn.addEventListener('click', () => toggleEagleVision());
+  }
+
   // 'V' key = Eagle Vision in AC controls
   window.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'v' && !/input|textarea/i.test(e.target.tagName)) toggle();
+    if (e.key.toLowerCase() === 'v' && !/input|textarea/i.test(e.target.tagName)) {
+      toggleEagleVision();
+    }
   });
 }
 
@@ -106,19 +134,31 @@ function initCursor() {
   let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
   let dx = cx, dy = cy;
   let rx = cx, ry = cy;
+  let isMoving = false;
 
-  window.addEventListener('mousemove', (e) => { dx = e.clientX; dy = e.clientY; }, { passive: true });
+  window.addEventListener('mousemove', (e) => {
+    dx = e.clientX;
+    dy = e.clientY;
+    isMoving = true;
+  }, { passive: true });
 
   function loop() {
     requestAnimationFrame(loop);
+    if (!isMoving) return;
+
     // dot follows tightly
     cx += (dx - cx) * 0.6;
     cy += (dy - cy) * 0.6;
     // ring trails slightly
-    rx += (dx - rx) * 0.18;
-    ry += (dy - ry) * 0.18;
-    dot.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
-    cursor.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    rx += (dx - rx) * 0.2;
+    ry += (dy - ry) * 0.2;
+    dot.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0) translate(-50%,-50%)`;
+    cursor.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0) translate(-50%,-50%)`;
+
+    // Settle to avoid constant DOM writes when stationary
+    if (Math.abs(dx - cx) < 0.1 && Math.abs(dy - cy) < 0.1 && Math.abs(dx - rx) < 0.1 && Math.abs(dy - ry) < 0.1) {
+      isMoving = false;
+    }
   }
   loop();
 
